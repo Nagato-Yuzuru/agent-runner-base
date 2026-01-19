@@ -1,0 +1,49 @@
+services:
+  agent-runner:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        USERNAME: runner
+    deploy:
+      resources:
+        limits:
+          cpus: "4.0"
+          memory: 8G
+    volumes:
+      - /run/host-services/ssh-auth.sock:/run/host-services/ssh-auth.sock
+      - ~/.ssh/allowed_signers:/home/runner/.ssh/allowed_signers:ro
+      - ~/.config/nvim:/home/runner/.config/nvim:ro
+      - ./lazy-lock.agent.json:/home/runner/.config/nvim/lazy-lock.json
+      - ./.zshrc:/home/runner/.zshrc
+      - ./.zshenv:/home/runner/.zshenv:ro
+      - ./.zsh_plugins.txt:/home/runner/.zsh_plugins.txt:ro
+      - ~/.config/starship.toml:/home/runner/.config/starship.toml:ro
+      # mount code to container
+
+      - uv_cache:/home/runner/.cache/uv
+      - claude_state:/home/runner/.claude
+      - anthropic_config:/home/runner/.config/anthropic
+      - mise_data:/home/runner/.local/share/mise
+      - nvim_data:/home/runner/.local/share/nvim
+      - nvim_state:/home/runner/.local/state/nvim
+      - antidote_cache:/home/runner/.cache/antidote
+    environment:
+      - GIT_CONFIG_PARAMETERS='gpg.ssh.program=/usr/bin/ssh-keygen'
+      - HOST_GATEWAY=host
+      - OP_SERVICE_ACCOUNT_TOKEN=${SERVICE_ACCOUNT_AUTH_TOKEN}
+      - SSH_AUTH_SOCK=/run/host-services/ssh-auth.sock
+      - OP_BIOMETRIC_UNLOCK_ENABLED=true
+      - OP_INTEGRATION_EXTERNAL=true
+      - OP_COMMAND_ALIASES=true
+      - UV_CACHE_DIR=/home/runner/.cache/uv
+    command: [ "sleep", "infinity" ]
+
+volumes:
+  uv_cache:
+  anthropic_config:
+  mise_data:
+  claude_state:
+  nvim_data:
+  nvim_state:
+  antidote_cache:

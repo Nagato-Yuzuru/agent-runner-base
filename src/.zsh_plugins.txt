@@ -1,0 +1,17 @@
+ohmyzsh/ohmyzsh path:lib/history.zsh
+ohmyzsh/ohmyzsh path:lib/directories.zsh
+
+zsh-users/zsh-completions kind:fpath
+
+ohmyzsh/ohmyzsh path:lib/completion.zsh
+
+ohmyzsh/ohmyzsh path:plugins/zoxide
+wfxr/forgit
+
+Aloxaf/fzf-tab
+zsh-users/zsh-autosuggestions
+
+zsh-users/zsh-syntax-highlighting
+
+ohmyzsh/ohmyzsh path:lib/key-bindings.zsh
+zsh-users/zsh-history-substring-search
