@@ -39,6 +39,9 @@ services:
       - OP_INTEGRATION_EXTERNAL=true
       - OP_COMMAND_ALIASES=true
       - UV_CACHE_DIR=/home/runner/.cache/uv
+      - TERM=xterm-256color
+      - COLORTERM=truecolor
+
     command: ["sleep", "infinity"]
 
 volumes:
@@ -49,4 +52,3 @@ volumes:
   nvim_data:
   nvim_state:
   antidote_cache:
-

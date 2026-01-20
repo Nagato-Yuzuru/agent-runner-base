@@ -43,7 +43,9 @@ zstyle ':completion:*' menu select
 eval "$(starship init zsh)"
 
 # fzf
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+if command -v fzf &> /dev/null; then
+    source <(fzf --zsh)
+fi
 
 zstyle ':completion:*:git-checkout:*' sort false
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
