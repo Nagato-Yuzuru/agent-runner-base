@@ -70,7 +70,7 @@ ENV EDITOR=nvim
 ENV UV_COMPILE_BYTECODE="1"
 
 RUN echo 'eval "$(mise activate zsh)"' >> /home/$USERNAME/.zshrc && \
-    mise use -g node pnpm uv usage carapace rust && \
+    mise use -g node pnpm uv rust go usage carapace  && \
     mise x -- pnpm add -g @anthropic-ai/claude-code && \
     rm -rf /home/$USERNAME/.local/share/mise/cache/* && \
     rm -rf /home/$USERNAME/.local/share/mise/downloads/*
