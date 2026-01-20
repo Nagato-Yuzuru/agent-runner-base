@@ -9,7 +9,7 @@ export EDITOR=nvim
 #
 # Antidote installation path for Linux
 # Install antidote: git clone --depth=1 https://github.com/mattmc3/antidote.git ${ZDOTDIR:-~}/.antidote
-source "${ZDOTDIR:-~}/.antidote/antidote.zsh"
+source "${ZDOTDIR:-$HOME}/.antidote/antidote.zsh"
 
 fpath=(
     "${HOME}/.zsh/completions"

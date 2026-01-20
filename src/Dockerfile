@@ -69,16 +69,20 @@ ENV PATH="$PNPM_HOME:/home/$USERNAME/.local/bin:$PATH"
 ENV EDITOR=nvim
 ENV UV_COMPILE_BYTECODE="1"
 
-RUN mkdir -p /home/$USERNAME/.cache/uv \
-    /home/$USERNAME/.claude \
-    /home/$USERNAME/.config/anthropic \
-    /home/$USERNAME/.local/share/mise \
-    /home/$USERNAME/.1password
-
 RUN echo 'eval "$(mise activate zsh)"' >> /home/$USERNAME/.zshrc && \
     mise use -g node pnpm uv usage carapace rust && \
     mise x -- pnpm add -g @anthropic-ai/claude-code && \
     rm -rf /home/$USERNAME/.local/share/mise/cache/* && \
     rm -rf /home/$USERNAME/.local/share/mise/downloads/*
 
+RUN mkdir -p /home/$USERNAME/.cache/uv \
+    /home/$USERNAME/.claude \
+    /home/$USERNAME/.config/anthropic \
+    /home/$USERNAME/.1password \
+    /home/$USERNAME/.local/share/mise \
+    /home/$USERNAME/.local/share/nvim \
+    /home/$USERNAME/.local/state/nvim \
+    /home/$USERNAME/.cache/antidote
+
 CMD ["sleep", "infinity"]
+
