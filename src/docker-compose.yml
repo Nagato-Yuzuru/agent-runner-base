@@ -4,12 +4,18 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        USERNAME: runner
+        - USERNAME=runner
+        - VCS_REF=${VCS_REF}
+        - HOST_USER=${HOST_USER}
+        - HOST_OP_PATH=${HOST_OP_PATH}
+        - VERSION=${VERSION:-latest}
     deploy:
       resources:
         limits:
           cpus: "4.0"
           memory: 8G
+    group_add:
+      - 67278
     volumes:
       - /run/host-services/ssh-auth.sock:/run/host-services/ssh-auth.sock
       - ~/.ssh/allowed_signers:/home/runner/.ssh/allowed_signers:ro
@@ -19,9 +25,9 @@ services:
       - ./.zshenv:/home/runner/.zshenv:ro
       - ./.zsh_plugins.txt:/home/runner/.zsh_plugins.txt:ro
       - ~/.config/starship.toml:/home/runner/.config/starship.toml:ro
-      - ~/.gitconfig:/home/runner/.gitconfig:ro
+      - ./.gitconfig:/home/runner/.gitconfig:cache
       - ~/.gitconfig_managed:/home/runner/.gitconfig_managed:ro
-      # mount code to container
+        # mount code to container
 
       - uv_cache:/home/runner/.cache/uv
       - claude_state:/home/runner/.claude
@@ -31,18 +37,13 @@ services:
       - nvim_state:/home/runner/.local/state/nvim
       - antidote_cache:/home/runner/.cache/antidote
     environment:
-      - GIT_CONFIG_PARAMETERS='gpg.ssh.program=/usr/bin/ssh-keygen'
       - HOST_GATEWAY=host
-      - OP_SERVICE_ACCOUNT_TOKEN=${SERVICE_ACCOUNT_AUTH_TOKEN}
       - SSH_AUTH_SOCK=/run/host-services/ssh-auth.sock
-      - OP_BIOMETRIC_UNLOCK_ENABLED=true
-      - OP_INTEGRATION_EXTERNAL=true
-      - OP_COMMAND_ALIASES=true
       - UV_CACHE_DIR=/home/runner/.cache/uv
       - TERM=xterm-256color
       - COLORTERM=truecolor
 
-    command: ["sleep", "infinity"]
+    command: [ "sleep", "infinity" ]
 
 volumes:
   uv_cache:
