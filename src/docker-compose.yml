@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        - USERNAME=runner
+        - USERNAME=${RUNNER_NAME}
         - VCS_REF=${VCS_REF}
         - HOST_USER=${HOST_USER}
         - HOST_OP_PATH=${HOST_OP_PATH}
@@ -18,28 +18,28 @@ services:
       - 67278
     volumes:
       - /run/host-services/ssh-auth.sock:/run/host-services/ssh-auth.sock
-      - ~/.ssh/allowed_signers:/home/runner/.ssh/allowed_signers:ro
-      - ~/.config/nvim:/home/runner/.config/nvim:ro
-      - ./lazy-lock.agent.json:/home/runner/.config/nvim/lazy-lock.json
-      - ./.zshrc:/home/runner/.zshrc
-      - ./.zshenv:/home/runner/.zshenv:ro
-      - ./.zsh_plugins.txt:/home/runner/.zsh_plugins.txt:ro
-      - ~/.config/starship.toml:/home/runner/.config/starship.toml:ro
-      - ./.gitconfig:/home/runner/.gitconfig:cache
-      - ~/.gitconfig_managed:/home/runner/.gitconfig_managed:ro
+      - ~/.ssh/allowed_signers:/home/${RUNNER_NAME}/.ssh/allowed_signers:ro
+      - ~/.config/nvim:/home/${RUNNER_NAME}/.config/nvim:ro
+      - ./lazy-lock.agent.json:/home/${RUNNER_NAME}/.config/nvim/lazy-lock.json
+      - ./.zshrc:/home/${RUNNER_NAME}/.zshrc
+      - ./.zshenv:/home/${RUNNER_NAME}/.zshenv:ro
+      - ./.zsh_plugins.txt:/home/${RUNNER_NAME}/.zsh_plugins.txt:ro
+      - ~/.config/starship.toml:/home/${RUNNER_NAME}/.config/starship.toml:ro
+      - ./.gitconfig:/home/${RUNNER_NAME}/.gitconfig:cache
+      - ~/.gitconfig_managed:/home/${RUNNER_NAME}/.gitconfig_managed:ro
         # mount code to container
 
-      - uv_cache:/home/runner/.cache/uv
-      - claude_state:/home/runner/.claude
-      - anthropic_config:/home/runner/.config/anthropic
-      - mise_data:/home/runner/.local/share/mise
-      - nvim_data:/home/runner/.local/share/nvim
-      - nvim_state:/home/runner/.local/state/nvim
-      - antidote_cache:/home/runner/.cache/antidote
+      - uv_cache:/home/${RUNNER_NAME}/.cache/uv
+      - claude_state:/home/${RUNNER_NAME}/.claude
+      - anthropic_config:/home/${RUNNER_NAME}/.config/anthropic
+      - mise_data:/home/${RUNNER_NAME}/.local/share/mise
+      - nvim_data:/home/${RUNNER_NAME}/.local/share/nvim
+      - nvim_state:/home/${RUNNER_NAME}/.local/state/nvim
+      - antidote_cache:/home/${RUNNER_NAME}/.cache/antidote
     environment:
       - HOST_GATEWAY=host
       - SSH_AUTH_SOCK=/run/host-services/ssh-auth.sock
-      - UV_CACHE_DIR=/home/runner/.cache/uv
+      - UV_CACHE_DIR=/home/${RUNNER_NAME}/.cache/uv
       - TERM=xterm-256color
       - COLORTERM=truecolor
 
