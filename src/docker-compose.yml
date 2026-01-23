@@ -17,38 +17,40 @@ services:
     group_add:
       - 67278
     volumes:
-      - /run/host-services/ssh-auth.sock:/run/host-services/ssh-auth.sock
-      - ~/.ssh/allowed_signers:/home/${RUNNER_NAME}/.ssh/allowed_signers:ro
-      - ~/.config/nvim:/home/${RUNNER_NAME}/.config/nvim:ro
-      - ./lazy-lock.agent.json:/home/${RUNNER_NAME}/.config/nvim/lazy-lock.json
-      - ./.zshrc:/home/${RUNNER_NAME}/.zshrc
-      - ./.zshenv:/home/${RUNNER_NAME}/.zshenv:ro
-      - ./.zsh_plugins.txt:/home/${RUNNER_NAME}/.zsh_plugins.txt:ro
-      - ~/.config/starship.toml:/home/${RUNNER_NAME}/.config/starship.toml:ro
-      - ./.gitconfig:/home/${RUNNER_NAME}/.gitconfig:cache
-      - ~/.gitconfig_managed:/home/${RUNNER_NAME}/.gitconfig_managed:ro
-        # mount code to container
+      - /run/host-services/ssh-auth.sock:/agent.sock
+      - ~/.ssh/allowed_signers:/home/${RUNNER_NAME:-runer}/.ssh/allowed_signers:ro
+      - ~/.config/nvim:/home/${RUNNER_NAME:-runer}/.config/nvim:ro
+      - ./lazy-lock.agent.json:/home/${RUNNER_NAME:-runer}/.config/nvim/lazy-lock.json
+      - ./.zshrc:/home/${RUNNER_NAME:-runer}/.zshrc
+      - ./.zshenv:/home/${RUNNER_NAME:-runer}/.zshenv:ro
+      - ./.zsh_plugins.txt:/home/${RUNNER_NAME:-runer}/.zsh_plugins.txt:ro
+      - ~/.config/starship.toml:/home/${RUNNER_NAME:-runer}/.config/starship.toml:ro
+      - ./.gitconfig:/home/${RUNNER_NAME:-runer}/.gitconfig:cache
+      - ~/.gitconfig_managed:/home/${RUNNER_NAME:-runer}/.gitconfig_managed:ro
+      - ${WORK_SPACE:-.}:/home/${RUNNER_NAME:-runer}/workspace:cached
 
-      - uv_cache:/home/${RUNNER_NAME}/.cache/uv
-      - claude_state:/home/${RUNNER_NAME}/.claude
-      - anthropic_config:/home/${RUNNER_NAME}/.config/anthropic
-      - mise_data:/home/${RUNNER_NAME}/.local/share/mise
-      - nvim_data:/home/${RUNNER_NAME}/.local/share/nvim
-      - nvim_state:/home/${RUNNER_NAME}/.local/state/nvim
-      - antidote_cache:/home/${RUNNER_NAME}/.cache/antidote
+      - uv_cache:/home/${RUNNER_NAME:-runer}/.cache/uv
+      - claude_state:/home/${RUNNER_NAME:-runer}/.claude
+      - anthropic_config:/home/${RUNNER_NAME:-runer}/.config/anthropic
+      - mise_data:/home/${RUNNER_NAME:-runer}/.local/share/mise
+      - completions:/home/${RUNNER_NAME:-runer}/.local/share/zsh/site-functions
+      - nvim_data:/home/${RUNNER_NAME:-runer}/.local/share/nvim
+      - nvim_state:/home/${RUNNER_NAME:-runer}/.local/state/nvim
+      - antidote_cache:/home/${RUNNER_NAME:-runer}/.cache/antidote
     environment:
+      - SSH_AUTH_SOCK=/agent.sock
       - HOST_GATEWAY=host
-      - SSH_AUTH_SOCK=/run/host-services/ssh-auth.sock
-      - UV_CACHE_DIR=/home/${RUNNER_NAME}/.cache/uv
+      - UV_CACHE_DIR=/home/${RUNNER_NAME:-runer}/.cache/uv
       - TERM=xterm-256color
       - COLORTERM=truecolor
 
-    command: [ "sleep", "infinity" ]
+    command: ["sleep", "infinity"]
 
 volumes:
   uv_cache:
   anthropic_config:
   mise_data:
+  completions:
   claude_state:
   nvim_data:
   nvim_state:

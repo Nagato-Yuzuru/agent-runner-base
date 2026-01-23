@@ -9,7 +9,7 @@ export EDITOR=nvim
 #
 # Antidote installation path for Linux
 # Install antidote: git clone --depth=1 https://github.com/mattmc3/antidote.git ${ZDOTDIR:-~}/.antidote
-source "${ZDOTDIR:-$HOME}/.antidote/antidote.zsh"
+source "${ZDOTDIR:-${HOME}}/.antidote/antidote.zsh"
 
 fpath=(
     "${HOME}/.zsh/completions"
@@ -44,11 +44,18 @@ eval "$(starship init zsh)"
 
 # fzf
 if command -v fzf &> /dev/null; then
-    source <(fzf --zsh)
+    source <(fzf --zsh) 
+fi
+
+
+if command -v dircolors &> /dev/null; then
+    eval "$(dircolors -b)"
+    zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+else
+    export CLICOLOR=1
 fi
 
 zstyle ':completion:*:git-checkout:*' sort false
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':fzf-tab:complete:*:*' fzf-preview 'less ${(Q)realpath}'
 zstyle ':fzf-tab:*' fzf-bindings 'forward-slash:accept'
 zstyle ':fzf-tab:*' fzf-bindings 'ctrl-e:accept'
@@ -87,8 +94,6 @@ alias rm='rm -i'
 alias mv='mv -i'
 alias vim='nvim'
 alias watch='watch --color'
-alias ls='ls --color=auto'
-alias grep='grep --color=auto'
 
 alias pip='uv pip'
 alias pip3='uv pip'
@@ -96,6 +101,8 @@ alias python='python3'
 
 alias fd='fd --color=auto'
 alias tf='terraform'
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
 
 
 function wellcome() {
