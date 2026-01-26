@@ -47,11 +47,22 @@ services:
     command: ["sleep", "infinity"]
 
 volumes:
-  uv_cache:
   anthropic_config:
-  mise_data:
-  completions:
   claude_state:
-  nvim_data:
   nvim_state:
+
+  uv_cache:
+    external: true
+    name: fedora_uv_cache
+  mise_data:
+    external: true
+    name: fedora_mise_data
+  completions:
+    external: true
+    name: fedora_completions
+  nvim_data:
+    external: true
+    name: fedora_nvim_data
   antidote_cache:
+    external: true
+    name: fedora_antidote_cache

@@ -64,7 +64,7 @@ ENV UV_COMPILE_BYTECODE="1"
 
 RUN echo 'eval "$(mise activate zsh)"' >> /home/$USERNAME/.zshrc \
     && mise use -g node pnpm uv rust go usage carapace \
-    && mise x -- pnpm add -g @anthropic-ai/claude-code \
+    && curl -fsSL https://claude.ai/install.sh | bash \
     && rm -rf /home/$USERNAME/.local/share/mise/cache/* \
     && rm -rf /home/$USERNAME/.local/share/mise/downloads/* \
     && git clone --depth=1 https://github.com/mattmc3/antidote.git /home/$USERNAME/.antidote \
